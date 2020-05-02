@@ -17,7 +17,6 @@ Jika sebuah direktori di-rename dengan awalan “encv1_”, maka direktori terse
 Apabila sebuah direktori terenkripsi di-rename menjadi tidak terenkripsi, maka isi adirektori tersebut akan terdekrip.
 Setiap pembuatan direktori terenkripsi baru (mkdir ataupun rename) akan tercatat ke sebuah database/log berupa file.
 Semua file yang berada dalam direktori ter enkripsi menggunakan caesar cipher dengan key.
-
 ```
 9(ku@AW1[Lmvgax6q`5Y2Ry?+sF!^HKQiBXCUSe&0M.b%rI'7d)o4~VfZ*{#:}ETt$3J-zpc]lnh8,GwP_ND|jO
 ```
@@ -74,10 +73,49 @@ INFO::200419-18:29:33::CREAT::/iz1/yena.jpg
 INFO::200419-18:29:33::RENAME::/iz1/yena.jpg::/iz1/yena.jpeg
 ```
 
-##### Penjelasan Soal
-Soal kali ini diminta untuk membuat sebuah file system dengan direktorinya adalah `/home/[user]/Documents`.
+##### PENJELASAN SOAL
+Soal kali ini diminta untuk membuat sebuah file system dengan direktorinya adalah `/home/[user]/Documents`. 
 ##### 1
-Pada soal nomor 1, diminta untuk melakukan enkripsi dengan menggunakan metode Caesar Chiper Key
+Soal nomor 1 diminta untuk membuat sebuah direktori baru yang nantinya akan dibuat untuk mengenkripsi nama file-file yang ada di dalam folder yang dienkripsi. Enkripsi yang digunakan adalah enkripsi versi 1, yaitu enkripsi menggunakan Caesar Chiper Key dengan `key = 10`.
+
+```
+char *encrypt(char* str, bool cek)
+{
+	int i, j, k = 0;
+	char *ext = strrchr(str, '.');
+	if(cek && ext != NULL) k = strlen(ext);
+	for(i = 0; i < strlen(str) - k; i++)
+	{
+		for(j = 0; j < strlen(key); j++)
+		{
+			if(str[i] == key[j]){
+				str[i] = key[(j + ges) % strlen(key)];
+				break;
+			}
+		}
+	}
+	return str;
+}
+
+char *decrypt(char* str, bool cek)
+{
+	int i, j, k = 0;
+	char *ext = strrchr(str, '.');
+	if(cek && ext != NULL) k = strlen(ext);
+	for(i = 0; i < strlen(str) - k; i++)
+	{
+		for(j = 0; j < strlen(key); j++)
+		{
+			if(str[i] == key[j]){
+				str[i] = key[(j + strlen(key) - ges) % strlen(key)];
+				break;
+			}
+		}
+	}
+	return str;
+}
+```
+
 ##### 4
 Pada soal nomor 4, diminta untuk melakukan pencatatan log untuk setiap command yang dilakukan pada file system. Untuk melakukan pencatatan tersebut, maka dibuat fungsi `write_logW` untuk mencatat log untuk syscall rmdir dan unlink dan `write_logI` untuk mencatat log selain syscall rmdir dan unlink. Lalu kedua fungsi tersebut dipanggil ke string command yang sedang dijalankan
 
