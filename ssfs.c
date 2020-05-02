@@ -155,49 +155,6 @@ int check_ext(char* file)
 	return id;
 }
 
-void split(char *str)
-{
-	char finalPath[10000000];
-	sprintf(finalPath, "%s.", str);
-	pid_t cid;
-	cid = fork();
-	if(cid == 0)
-	{
-		char *argv[] = {"split", "-b", "1024", "-d", "-a", "3", str, finalPath, NULL};
-		execv("/usr/bin/split", argv);
-	}
-	int status;
-	while(wait(&status) > 0);
-	unlink(str);
-}
-
-void combine(char *str)
-{
-	char buff[2048];
-	int id = 0;
-	char *ext = str + strlen(str) - 4;
-	if(strcmp(ext, ".000")) return;
-	ext[0] = '\0';
-	FILE *combined;
-	combined = fopen(str, "wb");
-	while(1)
-	{
-		char name[1000000];
-		sprintf(name, "%s.%03d", str, id);
-		FILE *each;
-		each = fopen(name, "rb");
-		if(!each) break;
-		fseek(each, 0L, SEEK_END);
-		rewind(each);
-		fread(buff, sizeof(buff), ftell(each), each);
-		fwrite(buff, sizeof(buff), ftell(each), combined);
-		fclose(each);
-		unlink(name);
-		id++;
-	}
-	fclose(combined);
-}
-
 int encrFolder(char *str)
 {
 	int ans;
