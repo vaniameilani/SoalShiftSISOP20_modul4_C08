@@ -10,6 +10,7 @@ Di suatu perusahaan, terdapat pekerja baru yang super jenius, ia bernama jasir. 
 (catatan: mount source (root) filesystem adalah direktori /home/[user]/Documents)
 
 Berikut adalah detail filesystem rancangan jasir:
+
 1 . Enkripsi versi 1:
 Jika sebuah direktori dibuat dengan awalan “encv1_”, maka direktori tersebut akan menjadi direktori terenkripsi menggunakan metode enkripsi v1.
 Jika sebuah direktori di-rename dengan awalan “encv1_”, maka direktori tersebut akan menjadi direktori terenkripsi menggunakan metode enkripsi v1.
@@ -35,7 +36,6 @@ Pada enkripsi v2, file-file pada direktori asli akan menjadi bagian-bagian kecil
 Metode enkripsi pada suatu direktori juga berlaku kedalam direktori lain yang ada didalam direktori tersebut (rekursif).
 
 3. Sinkronisasi direktori otomatis:
-
 Tanpa mengurangi keumuman, misalkan suatu directory bernama dir akan tersinkronisasi dengan directory yang memiliki nama yang sama dengan awalan sync_ yaitu sync_dir. Persyaratan untuk sinkronisasi yaitu:
 Kedua directory memiliki parent directory yang sama.
 Kedua directory kosong atau memiliki isi yang sama. Dua directory dapat dikatakan memiliki isi yang sama jika memenuhi:
@@ -48,14 +48,13 @@ Jika persyaratan di atas terlanggar, maka kedua directory tersebut tidak akan te
 Implementasi dilarang menggunakan symbolic links dan thread.
 
 4. Log system:
-
 Sebuah berkas nantinya akan terbentuk bernama "fs.log" di direktori *home* pengguna (/home/[user]/fs.log) yang berguna menyimpan daftar perintah system call yang telah dijalankan.
 Agar nantinya pencatatan lebih rapi dan terstruktur, log akan dibagi menjadi beberapa level yaitu INFO dan WARNING.
 Untuk log level WARNING, merupakan pencatatan log untuk syscall rmdir dan unlink.
 Sisanya, akan dicatat dengan level INFO.
 Format untuk logging yaitu:
 
-[LEVEL]::[yy][mm][dd]-[HH]:[MM]:[SS]::[CMD]::[DESC ...]
+`[LEVEL]::[yy][mm][dd]-[HH]:[MM]:[SS]::[CMD]::[DESC ...]`
 
 
 LEVEL    : Level logging
@@ -65,8 +64,8 @@ dd    	 : Hari dua digit
 HH    	 : Jam dua digit
 MM    	 : Menit dua digit
 SS    	 : Detik dua digit
-CMD     	 : System call yang terpanggil
-DESC      : Deskripsi tambahan (bisa lebih dari satu, dipisahkan dengan ::)
+CMD   	 : System call yang terpanggil
+DESC     : Deskripsi tambahan (bisa lebih dari satu, dipisahkan dengan ::)
 
 Contoh format logging nantinya seperti:
 ```
@@ -76,8 +75,11 @@ INFO::200419-18:29:33::RENAME::/iz1/yena.jpg::/iz1/yena.jpeg
 ```
 
 ##### Penjelasan Soal
+Soal kali ini diminta untuk membuat sebuah file system dengan direktorinya adalah `/home/[user]/Documents`.
+##### 1
+Pada soal nomor 1, diminta untuk melakukan enkripsi dengan menggunakan metode Caesar Chiper Key
 ##### 4
-Pada soal nomor 4, diminta untuk melakukan pencatatan log untuk setiap command yang dilakukan pada file system. Untuk melakukan pencatatan tersebut, kami membuat fungsi `write_logW` untuk mencatat log untuk syscall rmdir dan unlink dan `write_logI` untuk mencatat log selain syscall rmdir dan unlink. Lalu kedua fungsi tersebut dipanggil ke string command yang sedang dijalankan
+Pada soal nomor 4, diminta untuk melakukan pencatatan log untuk setiap command yang dilakukan pada file system. Untuk melakukan pencatatan tersebut, maka dibuat fungsi `write_logW` untuk mencatat log untuk syscall rmdir dan unlink dan `write_logI` untuk mencatat log selain syscall rmdir dan unlink. Lalu kedua fungsi tersebut dipanggil ke string command yang sedang dijalankan
 
 ```
 void write_logI(char *text, char* path)
